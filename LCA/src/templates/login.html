@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Love Compatibility Analyzer</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Menggunakan font Inter secara default */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* Putih dominan */
+        }
+
+        /* Warna Brand Tazkia */
+        /* Biru Dongker / Biru Tua */
+        .color-darkblue { --tw-bg-opacity: 1; background-color: #001f3f; }
+        .color-darkblue-text { color: #001f3f; }
+        /* Biru Muda (Aksen Sekunder) */
+        .color-lightblue { --tw-bg-opacity: 1; background-color: #4a90e2; }
+        /* Oranye (Aksi Utama) */
+        .color-orange { --tw-bg-opacity: 1; background-color: #ff8c00; }
+        .color-orange-hover:hover { background-color: #e57e00; }
+
+        /* Background Gradasi (Biru Dongker ke Biru Muda) */
+        .login-bg-gradient {
+            background: linear-gradient(135deg, #001f3f 0%, #4a90e2 100%);
+        }
+
+        /* Input Focus Border (Biru Muda) */
+        .input-focus-border:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.5); /* Ring effect biru muda */
+        }
+
+        /* Tombol Login Hover Effect */
+        .btn-login:hover {
+            box-shadow: 0 10px 15px -3px rgba(255, 140, 0, 0.4), 0 4px 6px -2px rgba(255, 140, 0, 0.2);
+            transform: translateY(-2px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Animasi Fade-In untuk Form */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .form-fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body class="login-bg-gradient min-h-screen flex items-center justify-center p-4">
+
+    <!-- Login Card Container -->
+    <div class="w-full max-w-md">
+        <div class="bg-white p-8 sm:p-10 rounded-2xl shadow-2xl form-fade-in">
+
+            <!-- Logo dan Headline -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center space-x-2 color-darkblue-text">
+                    <!-- Icon Hati dan AI (Gemini/Brain) -->
+                    <i data-lucide="heart-handshake" class="w-8 h-8 text-orange-500"></i>
+                    <i data-lucide="cpu" class="w-6 h-6 text-lightblue"></i>
+                </div>
+                <h1 class="text-3xl font-extrabold color-darkblue-text mt-3">
+                    Love Compatibility Analyzer
+                </h1>
+                <p class="text-gray-500 mt-2 text-sm">
+                    Masuk untuk memulai analisis kecocokan berbasis AI.
+                </p>
+            </div>
+
+            <!-- Formulir Login -->
+            <!-- Placeholder untuk action URL Flask -->
+            <form action="/login" method="POST">
+                
+                <!-- Input Email/Username -->
+                <div class="mb-5">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email atau Username</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                        <input type="email" id="email" name="email" required
+                               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-800 input-focus-border transition duration-200"
+                               placeholder="Masukkan email atau username Anda">
+                    </div>
+                </div>
+
+                <!-- Input Password -->
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                        <input type="password" id="password" name="password" required
+                               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-gray-800 input-focus-border transition duration-200"
+                               placeholder="Masukkan password Anda">
+                    </div>
+                </div>
+
+                <!-- Tombol Login -->
+                <button type="submit"
+                        class="btn-login w-full color-orange text-white font-bold py-3 rounded-full text-lg shadow-md focus:outline-none focus:ring-4 focus:ring-orange-300 transition duration-300 ease-in-out">
+                    <i data-lucide="log-in" class="w-5 h-5 inline mr-2"></i>
+                    Login
+                </button>
+
+                <!-- Link Tambahan -->
+                <div class="mt-6 text-center text-sm space-y-2">
+                    <a href="/register" class="text-gray-600 hover:text-orange-500 font-medium transition duration-200">
+                        Belum punya akun? <span class="text-lightblue hover:text-orange-500">Daftar Sekarang</span>
+                    </a>
+                    <br>
+                    <a href="/forgot-password" class="text-gray-500 hover:text-darkblue-500 transition duration-200">
+                        Lupa password?
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Kecil -->
+    <footer class="absolute bottom-4 text-center w-full">
+        <p class="text-xs text-white opacity-80">
+            &copy; 2025 Love Compatibility Analyzer – bilal a.k.a zerocool.
+        </p>
+    </footer>
+
+    <!-- Script for Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

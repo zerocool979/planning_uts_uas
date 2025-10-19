@@ -1,0 +1,19 @@
+{
+    "best_model": "RandomForest",
+    "reports": {
+        "RandomForest": {
+            "model": "RandomForestClassifier",
+            "accuracy": 0.822,
+            "precision": 0.483,
+            "recall": 0.152,
+            "f1_score": 0.231
+        },
+        "SVM": {
+            "model": "SVC",
+            "accuracy": 0.82,
+            "precision": 0.25,
+            "recall": 0.011,
+            "f1_score": 0.021
+        }
+    }
+}

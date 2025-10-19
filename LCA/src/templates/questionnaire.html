@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuesioner & Data Pasangan - Love Compatibility Analyzer</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Menggunakan font Inter secara default */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+        }
+
+        /* Warna Brand Tazkia */
+        .color-darkblue { --tw-bg-opacity: 1; background-color: #001f3f; }
+        .color-darkblue-text { color: #001f3f; }
+        .color-lightblue { --tw-bg-opacity: 1; background-color: #4a90e2; }
+        .color-orange { --tw-bg-opacity: 1; background-color: #ff8c00; }
+
+        /* Background Gradasi (Biru Dongker ke Putih) */
+        .questionnaire-bg-gradient {
+            background: linear-gradient(180deg, #001f3f 0%, #001f3f 250px, #f9fafb 250px, #f9fafb 100%);
+        }
+        @media (min-width: 640px) {
+            .questionnaire-bg-gradient {
+                background: linear-gradient(180deg, #001f3f 0%, #001f3f 200px, #f9fafb 200px, #f9fafb 100%);
+            }
+        }
+
+        /* Input Focus Border (Biru Muda) */
+        .input-focus-border:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.5);
+        }
+
+        /* Tombol Simpan Hover Effect */
+        .btn-submit:hover {
+            box-shadow: 0 8px 12px -2px rgba(255, 140, 0, 0.4);
+            transform: translateY(-1px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Animasi Fade-In untuk Card */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Custom style untuk radio/skala */
+        .scale-option {
+            transition: all 0.2s;
+        }
+        .scale-option:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        input[type="radio"]:checked + .scale-option {
+            background-color: #4a90e2;
+            color: white;
+            border-color: #001f3f;
+        }
+    </style>
+</head>
+<body class="questionnaire-bg-gradient min-h-screen flex flex-col items-center">
+
+    <!-- Main Card Container -->
+    <div class="w-full max-w-4xl px-4 sm:px-6 mt-8 sm:mt-16">
+        <div class="bg-white rounded-2xl shadow-2xl card-fade-in overflow-hidden">
+            
+            <!-- Panel Judul (Biru Dongker) -->
+            <header class="color-darkblue text-white p-6 sm:p-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-xl sm:text-3xl font-extrabold flex items-center">
+                            <i data-lucide="notebook-pen" class="w-6 h-6 sm:w-8 sm:h-8 mr-3 text-orange-400"></i>
+                            Kuesioner Kepribadian & Data Pasangan
+                        </h1>
+                        <p class="text-sm opacity-80 mt-1">
+                            Isi pertanyaan berikut agar sistem dapat menghitung tingkat kecocokan dan menganalisis hubungan kamu.
+                        </p>
+                    </div>
+                    <!-- Ilustrasi Kecil di Desktop -->
+                    <div class="hidden sm:block">
+                        <i data-lucide="sparkles" class="w-10 h-10 text-lightblue opacity-75"></i>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="mt-4 pt-4 border-t border-white border-opacity-30">
+                    <p class="text-sm font-semibold">Langkah 2 dari 4: Input Data Kunci</p>
+                    <div class="w-full bg-white bg-opacity-30 rounded-full h-2 mt-2">
+                        <!-- Progres 50% untuk Kuesioner -->
+                        <div class="bg-orange-500 h-2 rounded-full" style="width: 50%;"></div> 
+                    </div>
+                </div>
+            </header>
+
+            <!-- Formulir Kuesioner (Konten Putih) -->
+            <!-- Placeholder untuk action URL Flask -->
+            <form action="/questionnaire" method="POST" class="p-6 sm:p-8 space-y-10">
+                
+                <!-- BAGIAN 1: DATA DIRI PASANGAN -->
+                <section class="border-b border-gray-100 pb-8">
+                    <h2 class="text-xl font-bold color-darkblue-text mb-6 flex items-center">
+                        <i data-lucide="user-heart" class="w-6 h-6 mr-3 text-lightblue"></i>
+                        1. Data Diri Pasangan
+                    </h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+                        
+                        <!-- Input Nama Pasangan -->
+                        <div>
+                            <label for="partner_name" class="block text-sm font-medium text-gray-700 mb-1">Nama Pasangan</label>
+                            <div class="relative">
+                                <i data-lucide="user-2" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                                <input type="text" id="partner_name" name="partner_name" required
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200"
+                                    placeholder="Nama lengkap pasangan">
+                            </div>
+                        </div>
+
+                        <!-- Input Usia Pasangan -->
+                        <div>
+                            <label for="partner_age" class="block text-sm font-medium text-gray-700 mb-1">Usia Pasangan (Tahun)</label>
+                            <div class="relative">
+                                <i data-lucide="cake" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                                <input type="number" id="partner_age" name="partner_age" required min="17" max="99"
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200"
+                                    placeholder="Usia pasangan">
+                            </div>
+                        </div>
+
+                        <!-- Input Jenis Kelamin Pasangan -->
+                        <div>
+                            <label for="partner_gender" class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin Pasangan</label>
+                            <div class="relative">
+                                <i data-lucide="person-standing" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                                <select id="partner_gender" name="partner_gender" required
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200 appearance-none bg-white">
+                                    <option value="" disabled selected>Pilih Jenis Kelamin Pasangan</option>
+                                    <option value="L">Laki-laki</option>
+                                    <option value="P">Perempuan</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"></i>
+                            </div>
+                        </div>
+
+                        <!-- Input Tempat Tinggal Pasangan -->
+                        <div>
+                            <label for="partner_location" class="block text-sm font-medium text-gray-700 mb-1">Tempat Tinggal Pasangan</label>
+                            <div class="relative">
+                                <i data-lucide="map" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                                <input type="text" id="partner_location" name="partner_location" required
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200"
+                                    placeholder="Contoh: Jakarta, DKI Jakarta">
+                            </div>
+                        </div>
+
+                        <!-- Input Hobi Pasangan (Full Width) -->
+                        <div class="sm:col-span-2">
+                            <label for="partner_hobbies" class="block text-sm font-medium text-gray-700 mb-1">Hobi / Minat Pasangan (Pisahkan dengan koma)</label>
+                            <div class="relative">
+                                <i data-lucide="palette" class="absolute left-3 top-3 w-5 h-5 text-gray-400"></i>
+                                <textarea id="partner_hobbies" name="partner_hobbies" rows="2" required
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200"
+                                    placeholder="Contoh: Bermain game, koleksi tanaman, menonton film horor"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- BAGIAN 2: KUESIONER KEPRIBADIAN & MOOD -->
+                <section class="space-y-8">
+                    <h2 class="text-xl font-bold color-darkblue-text mb-6 flex items-center">
+                        <i data-lucide="brain-circuit" class="w-6 h-6 mr-3 text-lightblue"></i>
+                        2. Kuesioner Kepribadian & Nilai
+                    </h2>
+
+                    <!-- Contoh Pertanyaan 1: Komunikasi (Skala 1-5) -->
+                    <div class="question-block p-4 border border-blue-50 border-l-4 border-l-lightblue rounded-lg shadow-sm">
+                        <p class="font-semibold text-gray-800 mb-3">Q1: Seberapa penting komunikasi terbuka dan jujur dalam hubungan Anda?</p>
+                        <div class="flex justify-between space-x-2 sm:space-x-4">
+                            <!-- Skala 1 - Sangat Tidak Penting -->
+                            <label class="flex-1 text-center cursor-pointer">
+                                <input type="radio" name="q1_communication" value="1" required class="hidden">
+                                <span class="scale-option block p-2 rounded-xl border border-gray-300 text-sm">1</span>
+                                <span class="text-xs text-gray-500 mt-1 block">Tdk Penting</span>
+                            </label>
+                            <!-- Skala 2 -->
+                            <label class="flex-1 text-center cursor-pointer">
+                                <input type="radio" name="q1_communication" value="2" class="hidden">
+                                <span class="scale-option block p-2 rounded-xl border border-gray-300 text-sm">2</span>
+                            </label>
+                            <!-- Skala 3 - Netral -->
+                            <label class="flex-1 text-center cursor-pointer">
+                                <input type="radio" name="q1_communication" value="3" class="hidden">
+                                <span class="scale-option block p-2 rounded-xl border border-gray-300 text-sm">3</span>
+                                <span class="text-xs text-gray-500 mt-1 block">Netral</span>
+                            </label>
+                            <!-- Skala 4 -->
+                            <label class="flex-1 text-center cursor-pointer">
+                                <input type="radio" name="q1_communication" value="4" class="hidden">
+                                <span class="scale-option block p-2 rounded-xl border border-gray-300 text-sm">4</span>
+                            </label>
+                            <!-- Skala 5 - Sangat Penting -->
+                            <label class="flex-1 text-center cursor-pointer">
+                                <input type="radio" name="q1_communication" value="5" class="hidden">
+                                <span class="scale-option block p-2 rounded-xl border border-gray-300 text-sm">5</span>
+                                <span class="text-xs text-gray-500 mt-1 block">Sgt Penting</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Contoh Pertanyaan 2: Logis vs Emosional (Pilihan Ganda) -->
+                    <div class="question-block p-4 border border-blue-50 border-l-4 border-l-lightblue rounded-lg shadow-sm">
+                        <p class="font-semibold text-gray-800 mb-3">Q2: Saat menghadapi masalah, kamu cenderung bertindak berdasarkan...</p>
+                        <div class="space-y-3">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition duration-200">
+                                <input type="radio" name="q2_logic_emotion" value="Logis" required class="form-radio h-5 w-5 text-lightblue focus:ring-lightblue border-gray-300">
+                                <span class="ml-3 text-gray-700 font-medium">Logika dan Data</span>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition duration-200">
+                                <input type="radio" name="q2_logic_emotion" value="Emosional" class="form-radio h-5 w-5 text-lightblue focus:ring-lightblue border-gray-300">
+                                <span class="ml-3 text-gray-700 font-medium">Perasaan dan Intuisi</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Contoh Pertanyaan 3: Preferensi Waktu (Love Language) -->
+                    <div class="question-block p-4 border border-blue-50 border-l-4 border-l-lightblue rounded-lg shadow-sm">
+                        <p class="font-semibold text-gray-800 mb-3">Q3: Di antara Love Language ini, manakah yang paling kamu harapkan dari pasangan?</p>
+                        <div class="space-y-3">
+                             <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition duration-200">
+                                <input type="radio" name="q3_love_pref" value="Quality Time" required class="form-radio h-5 w-5 text-lightblue focus:ring-lightblue border-gray-300">
+                                <span class="ml-3 text-gray-700 font-medium">Quality Time (Waktu Berkualitas)</span>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition duration-200">
+                                <input type="radio" name="q3_love_pref" value="Words of Affirmation" class="form-radio h-5 w-5 text-lightblue focus:ring-lightblue border-gray-300">
+                                <span class="ml-3 text-gray-700 font-medium">Words of Affirmation (Kata-kata Penegasan)</span>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition duration-200">
+                                <input type="radio" name="q3_love_pref" value="Acts of Service" class="form-radio h-5 w-5 text-lightblue focus:ring-lightblue border-gray-300">
+                                <span class="ml-3 text-gray-700 font-medium">Acts of Service (Tindakan Pelayanan)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tambahkan lebih banyak pertanyaan di sini -->
+
+                </section>
+
+
+                <!-- Bagian Aksi Tombol -->
+                <div class="mt-10 pt-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between space-y-3 sm:space-y-0 sm:space-x-4">
+                    
+                    <!-- Tombol Kembali ke Profil -->
+                    <a href="/profile"
+                        class="w-full sm:w-auto px-6 py-3 rounded-full font-bold text-sm text-center border-2 border-lightblue text-lightblue hover:bg-lightblue hover:text-white transition duration-200">
+                        <i data-lucide="arrow-left" class="w-4 h-4 inline mr-2"></i>
+                        Kembali ke Profil
+                    </a>
+
+                    <!-- Tombol Kirim & Analisis Sekarang -->
+                    <button type="submit"
+                            class="btn-submit w-full sm:w-auto px-6 py-3 rounded-full font-bold text-sm text-white color-orange shadow-lg focus:outline-none focus:ring-4 focus:ring-orange-300 transition duration-300 ease-in-out">
+                        <i data-lucide="send" class="w-4 h-4 inline mr-2"></i>
+                        Kirim & Analisis Sekarang
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Footer Kecil -->
+    <footer class="mt-8 mb-4 text-center w-full max-w-4xl">
+        <p class="text-xs text-gray-500 opacity-80">
+            &copy; 2025 Love Compatibility Analyzer – bilal a.k.a zerocool.
+        </p>
+    </footer>
+
+    <!-- Script for Lucide Icons -->
+    <script>
+        lucide.createIcons();
+        
+        // Tambahkan logic untuk menangani perubahan pada radio button untuk efek fokus visual yang lebih baik
+        const scaleOptions = document.querySelectorAll('input[type="radio"]');
+        scaleOptions.forEach(input => {
+            input.addEventListener('change', function() {
+                // Hapus kelas terpilih dari semua label dalam grup yang sama
+                const groupName = this.name;
+                document.querySelectorAll(`input[name="${groupName}"]`).forEach(otherInput => {
+                    otherInput.nextElementSibling.classList.remove('bg-blue-50', 'shadow-md', 'border-lightblue');
+                });
+                
+                // Tambahkan kelas terpilih ke elemen yang baru saja dicentang
+                if (this.checked) {
+                    this.nextElementSibling.classList.add('bg-blue-50', 'shadow-md', 'border-lightblue');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

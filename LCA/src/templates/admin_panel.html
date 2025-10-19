@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Love Compatibility Analyzer</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Load Chart.js for visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <style>
+        /* Menggunakan font Inter secara default */
+        body { font-family: 'Inter', sans-serif; }
+        /* Warna Brand Tazkia */
+        .color-darkblue { background-color: #001f3f; }
+        .color-darkblue-text { color: #001f3f; }
+        .color-lightblue { background-color: #4a90e2; }
+        .color-orange { background-color: #ff8c00; }
+        .color-orange-hover:hover { background-color: #e67e22; } /* Sedikit lebih gelap */
+
+        /* Style Sidebar Link Aktif */
+        .nav-link.active {
+            background-color: #ff8c00; /* Orange */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(255, 140, 0, 0.5), 0 2px 4px -1px rgba(255, 140, 0, 0.3);
+        }
+        .nav-link:not(.active):hover {
+            background-color: rgba(74, 144, 226, 0.1); /* Light Blue Hover */
+            color: #4a90e2;
+        }
+
+        /* Card styles */
+        .admin-card { @apply bg-white rounded-xl p-5 shadow-md transition duration-200 hover:shadow-lg border border-blue-50; }
+
+        /* General layout for admin */
+        #admin-container {
+            min-height: calc(100vh - 4rem); /* Header height + buffer */
+            display: flex;
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header (Navbar) - Biru Dongker -->
+    <header class="color-darkblue shadow-lg sticky top-0 z-20">
+        <div class="flex items-center justify-between h-16 px-4 lg:px-8">
+            <div class="flex-shrink-0">
+                <span class="text-xl font-extrabold text-white flex items-center">
+                    <i data-lucide="shield-check" class="w-6 h-6 mr-2 text-orange-400 fill-orange-400"></i>
+                    Love Compatibility Analyzer Panel <span class="text-sm font-light ml-2 opacity-70 hidden sm:inline">| Admin Dashboard</span>
+                </span>
+            </div>
+            <!-- Menu Kanan -->
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-300 hidden md:block">Selamat Datang, Admin!</span>
+                <a href="#" class="text-gray-300 hover:text-orange-400 flex items-center transition duration-200">
+                    <i data-lucide="bell" class="w-5 h-5 mr-1"></i>
+                </a>
+                <a href="/logout" class="text-gray-300 hover:text-white flex items-center transition duration-200 px-3 py-1 rounded-full border border-gray-500 hover:border-orange-400">
+                    <i data-lucide="log-out" class="w-4 h-4 mr-1"></i>
+                    Keluar
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div id="admin-container">
+        
+        <!-- Sidebar Navigasi - Biru Dongker -->
+        <aside id="sidebar" class="color-darkblue w-64 p-4 flex-shrink-0 hidden lg:block shadow-xl z-10">
+            <nav class="space-y-2 pt-4">
+                <a href="#" class="nav-link flex items-center px-4 py-3 rounded-lg text-sm font-semibold text-white active" data-target="dashboard">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
+                    Dashboard Utama
+                </a>
+                <div class="border-t border-blue-900 my-2"></div>
+                <a href="#" class="nav-link flex items-center px-4 py-3 rounded-lg text-sm font-semibold text-gray-300" data-target="users">
+                    <i data-lucide="users" class="w-5 h-5 mr-3"></i>
+                    Manajemen Pengguna
+                </a>
+                <a href="#" class="nav-link flex items-center px-4 py-3 rounded-lg text-sm font-semibold text-gray-300" data-target="models">
+                    <i data-lucide="rocket" class="w-5 h-5 mr-3"></i>
+                    Manajemen Model AI/ML
+                </a>
+                <a href="#" class="nav-link flex items-center px-4 py-3 rounded-lg text-sm font-semibold text-gray-300" data-target="results">
+                    <i data-lucide="database" class="w-5 h-5 mr-3"></i>
+                    Data Hasil Analisis
+                </a>
+                <a href="#" class="nav-link flex items-center px-4 py-3 rounded-lg text-sm font-semibold text-gray-300" data-target="flagged">
+                    <i data-lucide="flag-triangle-right" class="w-5 h-5 mr-3"></i>
+                    Laporan Ditandai
+                </a>
+                <a href="#" class="nav-link flex items-center px-4 py-3 rounded-lg text-sm font-semibold text-gray-300" data-target="settings">
+                    <i data-lucide="settings" class="w-5 h-5 mr-3"></i>
+                    Pengaturan Sistem
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div id="content-area" class="flex-1 p-4 sm:p-8 overflow-y-auto">
+            
+            <!-- Dashboard Utama (Default View) -->
+            <section id="dashboard" class="main-content">
+                <h1 class="text-3xl font-extrabold color-darkblue-text mb-6 flex items-center">
+                    Dashboard Utama Admin
+                </h1>
+                
+                <!-- Statistik Card Ringkasan -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                    
+                    <!-- Card 1: Total Pengguna -->
+                    <div class="admin-card">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Total Pengguna</p>
+                                <p class="text-3xl font-bold color-darkblue-text mt-1">1,245</p>
+                            </div>
+                            <i data-lucide="users-2" class="w-10 h-10 text-lightblue p-2 rounded-full bg-blue-100"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2: Total Analisis -->
+                    <div class="admin-card">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Total Analisis</p>
+                                <p class="text-3xl font-bold color-darkblue-text mt-1">4,890</p>
+                            </div>
+                            <i data-lucide="heart-handshake" class="w-10 h-10 text-orange-500 p-2 rounded-full bg-orange-100"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Model ML Aktif -->
+                    <div class="admin-card">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Model Aktif</p>
+                                <p class="text-3xl font-bold color-darkblue-text mt-1">ML v2.1</p>
+                            </div>
+                            <i data-lucide="rocket" class="w-10 h-10 text-green-600 p-2 rounded-full bg-green-100"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Hasil Ditandai -->
+                    <div class="admin-card">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Hasil Ditandai</p>
+                                <p class="text-3xl font-bold color-darkblue-text mt-1 text-red-600">45</p>
+                            </div>
+                            <i data-lucide="flag-triangle-right" class="w-10 h-10 text-red-500 p-2 rounded-full bg-red-100"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Ringkasan -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="admin-card">
+                        <h2 class="text-xl font-bold color-darkblue-text mb-4">Tren Analisis Bulanan</h2>
+                        <div class="h-80">
+                            <canvas id="monthly-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="admin-card">
+                        <h2 class="text-xl font-bold color-darkblue-text mb-4">Distribusi Skor Kecocokan</h2>
+                        <div class="h-80">
+                            <canvas id="score-distribution-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1. Manajemen Pengguna -->
+            <section id="users" class="main-content hidden">
+                <h1 class="text-3xl font-extrabold color-darkblue-text mb-6">Manajemen Pengguna</h1>
+                <div class="flex justify-between mb-4">
+                    <input type="text" placeholder="Cari pengguna berdasarkan nama/email..." class="w-1/2 px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-lightblue">
+                    <button class="px-4 py-2 color-lightblue text-white rounded-lg hover:bg-blue-600 flex items-center shadow-md">
+                        <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i> Sinkronisasi Data
+                    </button>
+                </div>
+                <div class="admin-card overflow-x-auto p-0">
+                    <table class="min-w-full divide-y divide-blue-100">
+                        <thead class="bg-blue-50/50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider color-darkblue-text">Nama</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider color-darkblue-text">Email</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider color-darkblue-text">Tgl. Daftar</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider color-darkblue-text">Jml Analisis</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider color-darkblue-text">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-table-body" class="bg-white divide-y divide-blue-50">
+                            <!-- Dummy Data -->
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium color-darkblue-text">Budi Santoso</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">budi@gmail.com</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">10/01/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">7</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
+                                    <button class="text-lightblue hover:text-blue-600" title="Lihat Profil"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                                    <button class="text-orange-500 hover:text-orange-700" title="Hapus"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium color-darkblue-text">Siti Aisyah</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">siti.a@tazkia.ac.id</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">20/02/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">12</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
+                                    <button class="text-lightblue hover:text-blue-600" title="Lihat Profil"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                                    <button class="text-orange-500 hover:text-orange-700" title="Hapus"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 2. Manajemen Model AI/ML -->
+            <section id="models" class="main-content hidden">
+                <h1 class="text-3xl font-extrabold color-darkblue-text mb-6">Manajemen Model AI/ML</h1>
+                
+                <div class="flex justify-between mb-6">
+                    <p class="text-gray-600">Kelola versi Model Machine Learning dan status *deployment* Gemini AI.</p>
+                    <button class="px-4 py-2 color-orange text-white rounded-lg hover:bg-orange-600 flex items-center shadow-lg">
+                        <i data-lucide="upload" class="w-4 h-4 mr-2"></i> Upload Model Baru
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Model Card 1 (Aktif) -->
+                    <div class="admin-card border-green-500 border-2">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold color-darkblue-text">ML Compat v2.1</h3>
+                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-green-100 text-green-700">AKTIF</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">Algoritma Prediksi Kecocokan Utama</p>
+                        <p class="text-xs text-gray-400 mt-2">Deployed: 15/09/2025 | Akurasi: 92.5%</p>
+                        <div class="mt-4 space-x-2">
+                            <button class="px-3 py-1 text-xs color-orange text-white rounded-full hover:bg-orange-600">Deploy Ulang</button>
+                            <button class="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300">Nonaktifkan</button>
+                        </div>
+                    </div>
+                    <!-- Model Card 2 (Nonaktif) -->
+                    <div class="admin-card border-gray-300 border-2">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold color-darkblue-text">ML Compat v1.0</h3>
+                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-red-100 text-red-700">NONAKTIF</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">Versi Algoritma Lama</p>
+                        <p class="text-xs text-gray-400 mt-2">Deployed: 01/03/2025 | Akurasi: 85.1%</p>
+                        <div class="mt-4 space-x-2">
+                            <button class="px-3 py-1 text-xs color-lightblue text-white rounded-full hover:bg-blue-600">Aktifkan</button>
+                            <button class="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300">Arsipkan</button>
+                        </div>
+                    </div>
+                    <!-- Model Card 3 (Gemini Config) -->
+                    <div class="admin-card border-blue-500 border-2">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold color-darkblue-text">Gemini AI</h3>
+                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-lightblue/10 text-lightblue">NARASI</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">Generative Model (Flash/2.5)</p>
+                        <p class="text-xs text-gray-400 mt-2">Status: Terhubung | API Key: Terenkripsi</p>
+                        <div class="mt-4 space-x-2">
+                            <button class="px-3 py-1 text-xs color-lightblue text-white rounded-full hover:bg-blue-600">Ubah Konfigurasi</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Data Hasil Analisis (Simulasi) -->
+            <section id="results" class="main-content hidden">
+                <h1 class="text-3xl font-extrabold color-darkblue-text mb-6">Data Hasil Analisis</h1>
+                <div class="admin-card overflow-x-auto p-0">
+                    <table class="min-w-full divide-y divide-blue-100">
+                        <thead class="bg-blue-50/50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider color-darkblue-text">User ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider color-darkblue-text">Nama Pasangan</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider color-darkblue-text">Skor (%)</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider color-darkblue-text">Tanggal</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider color-darkblue-text">Status</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider color-darkblue-text">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-blue-50">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">USR1005</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium color-darkblue-text">Ratih Kumala</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-green-600">88%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">25/09/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Tinggi</span></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
+                                    <button class="text-lightblue hover:text-blue-600" title="Lihat Narasi"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                                    <button class="text-orange-500 hover:text-orange-700" title="Hapus"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">USR0891</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium color-darkblue-text">Fahmi Zaki</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-yellow-600">55%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">12/09/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Sedang</span></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
+                                    <button class="text-lightblue hover:text-blue-600" title="Lihat Narasi"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                                    <button class="text-orange-500 hover:text-orange-700" title="Hapus"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 4. Laporan & Flagged Results -->
+            <section id="flagged" class="main-content hidden">
+                <h1 class="text-3xl font-extrabold color-darkblue-text mb-6">Laporan & Hasil Ditandai</h1>
+                <p class="text-gray-600 mb-6">Daftar hasil analisis yang ditandai secara otomatis (misalnya, skor anomali, narasi sensitif) atau dilaporkan oleh pengguna untuk ditinjau manual.</p>
+
+                <div class="admin-card overflow-x-auto p-0">
+                    <table class="min-w-full divide-y divide-blue-100">
+                        <thead class="bg-red-50/50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider color-darkblue-text">ID Analisis</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider color-darkblue-text">User ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider color-darkblue-text">Tipe Flag</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider color-darkblue-text">Tanggal</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider color-darkblue-text">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-red-50">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">A123001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">USR1005</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium color-darkblue-text">Narasi Sensitif (AI)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">26/09/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
+                                    <button class="p-2 color-orange text-white rounded-md hover:bg-orange-600 flex items-center text-xs" title="Tinjau">Tinjau</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">A123002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">USR0891</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium color-darkblue-text">Skor Anomali (ML)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">13/09/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
+                                    <button class="p-2 color-orange text-white rounded-md hover:bg-orange-600 flex items-center text-xs" title="Tinjau">Tinjau</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 5. Pengaturan Sistem -->
+            <section id="settings" class="main-content hidden">
+                <h1 class="text-3xl font-extrabold color-darkblue-text mb-6">Pengaturan Sistem</h1>
+                
+                <div class="admin-card p-6 space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold color-darkblue-text mb-2">Konfigurasi API Gemini</h3>
+                        <label for="gemini-api" class="block text-sm font-medium text-gray-700">API Key</label>
+                        <input type="password" id="gemini-api" value="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" class="mt-1 block w-full md:w-1/2 rounded-md border-gray-300 shadow-sm focus:border-lightblue focus:ring-lightblue p-2" readonly>
+                        <button class="mt-2 px-4 py-2 text-sm color-orange text-white rounded-lg hover:bg-orange-600">Ubah Key</button>
+                    </div>
+
+                    <div class="border-t border-blue-50 pt-4">
+                        <h3 class="text-xl font-bold color-darkblue-text mb-2">Pengaturan Tema</h3>
+                        <p class="text-sm text-gray-500 mb-3">Sesuaikan warna aksen dashboard pengguna.</p>
+                        <div class="flex items-center space-x-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="theme-color" value="orange" checked class="text-orange-500 focus:ring-orange-500">
+                                <span class="text-sm font-medium color-darkblue-text">Oranye (Default)</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="theme-color" value="red" class="text-red-500 focus:ring-red-500">
+                                <span class="text-sm font-medium color-darkblue-text">Merah</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Footer (Biru Dongker) -->
+    <footer class="color-darkblue py-4">
+        <div class="px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-xs text-gray-300">
+                &copy; 2025 Love Compatibility Analyzer – STMIK Tazkia, Fakultas Sains dan Teknologi.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Script Logika Chart.js dan Navigasi Sidebar -->
+    <script>
+        lucide.createIcons();
+
+        // --- Logika Navigasi Sidebar ---
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('data-target');
+
+                // Hapus kelas 'active' dari semua link dan sembunyikan semua konten
+                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active', 'text-white'));
+                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.add('text-gray-300'));
+                document.querySelectorAll('.main-content').forEach(content => content.classList.add('hidden'));
+
+                // Set kelas 'active' pada link yang diklik dan tampilkan konten target
+                this.classList.add('active', 'text-white');
+                this.classList.remove('text-gray-300');
+                document.getElementById(targetId).classList.remove('hidden');
+            });
+        });
+
+
+        // --- Logika Chart.js ---
+        // 1. Tren Analisis Bulanan (Line Chart)
+        const ctxMonthly = document.getElementById('monthly-chart').getContext('2d');
+        const monthlyChart = new Chart(ctxMonthly, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt'],
+                datasets: [{
+                    label: 'Total Analisis',
+                    data: [120, 150, 180, 220, 250, 210, 280, 310, 350, 380],
+                    backgroundColor: 'rgba(74, 144, 226, 0.2)', // Light Blue
+                    borderColor: '#4a90e2',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(0, 31, 63, 0.05)' } },
+                    x: { grid: { display: false } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // 2. Distribusi Skor Kecocokan (Bar Chart)
+        const ctxScore = document.getElementById('score-distribution-chart').getContext('2d');
+        const scoreDistributionChart = new Chart(ctxScore, {
+            type: 'bar',
+            data: {
+                labels: ['0-20 (Sangat Rendah)', '21-40 (Rendah)', '41-60 (Sedang)', '61-80 (Baik)', '81-100 (Tinggi)'],
+                datasets: [{
+                    label: 'Jumlah Hasil',
+                    data: [450, 800, 1500, 1200, 940],
+                    backgroundColor: [
+                        '#ef4444', // Red (Rendah)
+                        '#f97316', // Orange-ish
+                        '#f59e0b', // Yellow (Sedang)
+                        '#4a90e2', // Light Blue (Baik)
+                        '#ff8c00'  // Orange (Tinggi)
+                    ],
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(0, 31, 63, 0.05)' } },
+                    x: { grid: { display: false } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>

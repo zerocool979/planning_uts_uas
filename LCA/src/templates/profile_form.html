@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat/Edit Profil - Love Compatibility Analyzer</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Menggunakan font Inter secara default */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+        }
+
+        /* Warna Brand Tazkia (Konsisten dengan Login/Register) */
+        .color-darkblue { --tw-bg-opacity: 1; background-color: #001f3f; }
+        .color-darkblue-text { color: #001f3f; }
+        .color-lightblue { --tw-bg-opacity: 1; background-color: #4a90e2; }
+        .color-orange { --tw-bg-opacity: 1; background-color: #ff8c00; }
+        .color-orange-hover:hover { background-color: #e57e00; }
+
+        /* Background Gradasi (Biru Dongker ke Biru Muda) - Untuk Header/Overlay */
+        .header-bg-gradient {
+            background: linear-gradient(90deg, #001f3f 0%, #4a90e2 100%);
+        }
+
+        /* Input Focus Border (Biru Muda) */
+        .input-focus-border:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.5);
+        }
+
+        /* Tombol Simpan Hover Effect */
+        .btn-save:hover {
+            box-shadow: 0 8px 12px -2px rgba(255, 140, 0, 0.4);
+            transform: translateY(-1px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Animasi Fade-In untuk Card */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-4 sm:p-8">
+
+    <!-- Header dengan Gradasi (Kontainer Kecil) -->
+    <div class="header-bg-gradient w-full py-2 shadow-lg mb-8">
+        <div class="max-w-4xl mx-auto flex items-center justify-start px-4">
+            <div class="inline-flex items-center space-x-2 text-white">
+                <i data-lucide="heart-handshake" class="w-6 h-6 text-orange-400"></i>
+                <span class="font-bold text-lg hidden sm:inline">Love Compatibility Analyzer</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Card Container (Form) -->
+    <div class="w-full max-w-4xl">
+        <div class="bg-white rounded-2xl shadow-xl card-fade-in overflow-hidden">
+            
+            <!-- Panel Judul (Biru Dongker) -->
+            <header class="color-darkblue text-white p-6 sm:p-8 flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold">
+                        Buat atau Edit Profilmu
+                    </h1>
+                    <p class="text-sm opacity-80 mt-1">
+                        Isi data di bawah agar AI dapat memahami kepribadian dan preferensimu.
+                    </p>
+                </div>
+                <i data-lucide="user-cog" class="w-8 h-8 text-lightblue"></i>
+            </header>
+
+            <!-- Formulir Profil (Konten Putih) -->
+            <form action="/profile" method="POST" class="p-6 sm:p-8">
+                
+                <!-- Layout Grid Responsive: 2 kolom di desktop, 1 kolom di mobile -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+
+                    <!-- Kolom 1: Data Dasar -->
+
+                    <!-- Input Nama Lengkap -->
+                    <div>
+                        <label for="full_name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                        <div class="relative">
+                            <i data-lucide="user" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="text" id="full_name" name="full_name" required
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200"
+                                placeholder="Masukkan nama lengkap">
+                        </div>
+                    </div>
+
+                    <!-- Input Usia -->
+                    <div>
+                        <label for="age" class="block text-sm font-medium text-gray-700 mb-1">Usia (Tahun)</label>
+                        <div class="relative">
+                            <i data-lucide="calendar" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="number" id="age" name="age" required min="17" max="99"
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200"
+                                placeholder="Minimal 17 tahun">
+                        </div>
+                    </div>
+
+                    <!-- Input Jenis Kelamin (Dropdown) -->
+                    <div>
+                        <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
+                        <div class="relative">
+                            <i data-lucide="venus-mars" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <select id="gender" name="gender" required
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200 appearance-none bg-white">
+                                <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                                <option value="O">Lainnya / Tidak Ingin Menyebutkan</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"></i>
+                        </div>
+                    </div>
+
+                    <!-- Input Tempat Tinggal -->
+                    <div>
+                        <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Tempat Tinggal (Kota/Provinsi)</label>
+                        <div class="relative">
+                            <i data-lucide="map-pin" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="text" id="location" name="location" required
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200"
+                                placeholder="Contoh: Bogor, Jawa Barat">
+                        </div>
+                    </div>
+
+                    <!-- Input Love Language (Dropdown) -->
+                    <div>
+                        <label for="love_language" class="block text-sm font-medium text-gray-700 mb-1">Love Language Utama</label>
+                        <div class="relative">
+                            <i data-lucide="heart" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <select id="love_language" name="love_language" required
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200 appearance-none bg-white">
+                                <option value="" disabled selected>Pilih Bahasa Cinta Anda</option>
+                                <option value="Words of Affirmation">Words of Affirmation (Kata-kata Penegasan)</option>
+                                <option value="Quality Time">Quality Time (Waktu Berkualitas)</option>
+                                <option value="Receiving Gifts">Receiving Gifts (Menerima Hadiah)</option>
+                                <option value="Acts of Service">Acts of Service (Tindakan Pelayanan)</option>
+                                <option value="Physical Touch">Physical Touch (Sentuhan Fisik)</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"></i>
+                        </div>
+                    </div>
+
+                    <!-- Kolom 2: Hobi dan Preferensi (Full Width di Mobile) -->
+                    <!-- Input Hobi / Minat (Textarea) -->
+                    <div class="md:col-span-2">
+                        <label for="hobbies" class="block text-sm font-medium text-gray-700 mb-1">Hobi / Minat (Pisahkan dengan koma)</label>
+                        <div class="relative">
+                            <i data-lucide="paint-brush" class="absolute left-3 top-3 w-5 h-5 text-gray-400"></i>
+                            <textarea id="hobbies" name="hobbies" rows="3" required
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200"
+                                placeholder="Contoh: Membaca buku fiksi, hiking, bermain gitar, memasak"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Input Preferensi Pasangan (Textarea) -->
+                    <div class="md:col-span-2">
+                        <label for="partner_preference" class="block text-sm font-medium text-gray-700 mb-1">Preferensi Pasangan (Gaya Hidup, Nilai, dll.)</label>
+                        <div class="relative">
+                            <i data-lucide="heart-pulse" class="absolute left-3 top-3 w-5 h-5 text-gray-400"></i>
+                            <textarea id="partner_preference" name="partner_preference" rows="4" required
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl text-gray-800 input-focus-border transition duration-200"
+                                placeholder="Jelaskan secara singkat tipe pasangan ideal Anda, nilai-nilai yang penting bagi Anda, atau gaya hidup yang Anda cari. Contoh: Mencari seseorang yang religius, menyukai traveling, dan memiliki ambisi karir."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bagian Aksi Tombol -->
+                <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
+                    
+                    <!-- Tombol Batal -->
+                    <button type="button" 
+                            onclick="window.history.back()"
+                            class="w-full sm:w-auto px-6 py-3 rounded-full font-bold text-sm border-2 border-lightblue text-lightblue hover:bg-lightblue hover:text-white transition duration-200">
+                        Batal
+                    </button>
+
+                    <!-- Tombol Simpan Profil -->
+                    <button type="submit"
+                            class="btn-save w-full sm:w-auto px-6 py-3 rounded-full font-bold text-sm text-white color-orange shadow-md focus:outline-none focus:ring-4 focus:ring-orange-300 transition duration-300 ease-in-out">
+                        <i data-lucide="save" class="w-4 h-4 inline mr-2"></i>
+                        Simpan Profil
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Footer Kecil -->
+    <footer class="mt-8 text-center w-full max-w-4xl">
+        <p class="text-xs text-gray-500 opacity-80">
+            &copy; 2025 Love Compatibility Analyzer – STMIK Tazkia, Fakultas Sains dan Teknologi.
+        </p>
+    </footer>
+
+    <!-- Script for Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
