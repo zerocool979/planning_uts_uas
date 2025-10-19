@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameSystem - DASHBOARD</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYGD4DwABDQFN+kC37AAAAABJRU5ErkJggg==" alt="Logo" style="width: 32px; height: 32px; background: var(--color-accent); border: 2px solid var(--color-border);">
+            GAMESYSTEM V2.4
+        </h1>
+        
+        <div class="card" style="text-align: center;">
+            <p>SELAMAT DATANG, <span id="playerUsername" style="color: var(--color-accent);">[PLAYER_NAME]</span></p>
+            <p>STATUS: ONLINE | SERVER: ASIA | DURATION: <span style="color: #ff0000;" onclick="showOverplayWarning('1 Jam 45 Menit')">1H 45M</span></p>
+        </div>
+
+        <h2>MAIN MENU</h2>
+        <div class="dashboard-grid">
+            <a href="story_mode.html" class="card btn">
+                <span style="font-size: 2em;">📖</span>
+                <h3>STORY MODE</h3>
+                <p style="font-size: 1em;">(SINGLE PLAYER)</p>
+            </a>
+            <a href="pvp_match.html" class="card btn">
+                <span style="font-size: 2em;">⚔️</span>
+                <h3>PVP MATCH</h3>
+                <p style="font-size: 1em;">(MULTIPLAYER)</p>
+            </a>
+            <a href="guild.html" class="card btn">
+                <span style="font-size: 2em;">🤝</span>
+                <h3>COMMUNITY / GUILD</h3>
+                <p style="font-size: 1em;">(SOSIAL)</p>
+            </a>
+            <a href="leaderboard.html" class="card btn">
+                <span style="font-size: 2em;">🏆</span>
+                <h3>RANK LEADERBOARD</h3>
+                <p style="font-size: 1em;">(KOMPETISI)</p>
+            </a>
+            <a href="profile.html" class="card btn btn-secondary">
+                <span style="font-size: 2em;">👤</span>
+                <h3>PROFILE</h3>
+            </a>
+            <a href="feedback.html" class="card btn btn-secondary">
+                <span style="font-size: 2em;">📧</span>
+                <h3>FEEDBACK</h3>
+            </a>
+            <a href="login.html" class="card btn btn-secondary" style="background-color: #f00;">
+                <span style="font-size: 2em;">🚪</span>
+                <h3>LOG OUT</h3>
+            </a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('playerUsername').textContent = localStorage.getItem('player_username') || 'PLAYER_1337';
+    </script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

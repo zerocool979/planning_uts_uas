@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameSystem - WARNING</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div id="overplayWarningModal" class="modal-overlay active">
+        <div class="modal-content">
+            <h2>🚨 OVERPLAY WARNING 🚨</h2>
+            <p style="font-size: 1.5em; color: #ff0000;">SISTEM MENDETEKSI DURASI BERMAIN BERLEBIH!</p>
+            
+            <div class="card" style="margin-top: 20px; border-color: #ff0000; background-color: #330000;">
+                <p style="font-size: 1.2em;">TOTAL PLAYTIME TERAKHIR:</p>
+                <p style="font-size: 2em; color: var(--color-accent); text-decoration: underline;" id="overplayDuration">2 JAM 5 MENIT</p>
+            </div>
+            
+            <p style="font-size: 1.2em; margin: 20px 0;">Mohon pertimbangkan untuk istirahat sejenak demi kesehatan Anda.</p>
+            
+            <button onclick="closeOverplayWarning()" class="btn" style="background-color: var(--color-border); color: #000;">LANJUTKAN BERMAIN (SAYA PAHAM)</button>
+            <a href="index.html" class="btn btn-secondary" style="margin-top: 10px;">KELUAR KE DASHBOARD</a>
+        </div>
+    </div>
+    <div class="container">
+        <p style="text-align: center;">Ini adalah halaman modal. Untuk mengujinya, buka index.html dan panggil `showOverplayWarning('2 Jam 5 Menit')` dari console.</p>
+    </div>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

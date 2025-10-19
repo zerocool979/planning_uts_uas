@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameSystem - FEEDBACK</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-link" style="margin-bottom: 20px;">&lt; BACK TO DASHBOARD</a>
+        <h1>SEND FEEDBACK</h1>
+
+        <div class="card">
+            <h2>LAPORAN/SARAN</h2>
+            <form onsubmit="alert('Feedback telah dikirim. Terima kasih atas masukan Anda.'); return false;">
+                <label for="subject">SUBJECT:</label>
+                <input type="text" id="subject" name="subject" required placeholder="Game Balance, Bug, Saran Fitur...">
+
+                <label for="category">KATEGORI:</label>
+                <select id="category" name="category" required>
+                    <option value="balance">Balance/Keseimbangan</option>
+                    <option value="bug">Bug Report</option>
+                    <option value="feature">Saran Fitur Baru</option>
+                    <option value="other">Lain-lain</option>
+                </select>
+
+                <label for="message">DETAIL PESAN:</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+
+                <button type="submit" class="btn" style="background-color: var(--color-accent); color: #000;">KIRIM FEEDBACK</button>
+            </form>
+        </div>
+    </div>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

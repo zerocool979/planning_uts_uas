@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameSystem - GUILD</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-link" style="margin-bottom: 20px;">&lt; BACK TO DASHBOARD</a>
+        <h1>GUILD SYSTEM</h1>
+        
+        <div class="card">
+            <h2>GUILD: &lt;PIXEL-WARRIORS&gt;</h2>
+            <p style="font-size: 1.2em;">LEVEL: 5 | MEMBER: 15/20 | RANK: #45</p>
+            <a href="chat.html?mode=guild" class="btn btn-small">OPEN GUILD CHAT</a>
+            <button class="btn btn-secondary btn-small">LEAVE GUILD (WARNING)</button>
+        </div>
+
+        <div class="card">
+            <h3>MEMBER LIST (DUMMY)</h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 1em;">
+                <tr style="border-bottom: 2px solid var(--color-accent);">
+                    <th style="padding: 8px; text-align: left;">USERNAME</th>
+                    <th style="padding: 8px; text-align: center;">LEVEL</th>
+                    <th style="padding: 8px; text-align: right;">ROLE</th>
+                </tr>
+                <tr><td style="padding: 8px; color: var(--color-accent);">GUILD_MASTER</td><td style="padding: 8px; text-align: center;">99</td><td style="padding: 8px; text-align: right;">LEADER</td></tr>
+                <tr><td style="padding: 8px;">PLAYER_1337</td><td style="padding: 8px; text-align: center;">55</td><td style="padding: 8px; text-align: right;">MEMBER</td></tr>
+                <tr><td style="padding: 8px;">PvP_GOD</td><td style="padding: 8px; text-align: center;">78</td><td style="padding: 8px; text-align: right;">OFFICER</td></tr>
+            </table>
+        </div>
+        
+        <div class="card" style="opacity: 0.7;">
+            <h3>CREATE NEW GUILD</h3>
+            <form>
+                <input type="text" placeholder="Nama Guild Baru" disabled>
+                <input type="password" placeholder="Kode Invite (Opsional)" disabled>
+                <button class="btn btn-small" disabled>CREATE (1000 COIN)</button>
+            </form>
+        </div>
+    </div>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

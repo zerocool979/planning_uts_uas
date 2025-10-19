@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameSystem - BATTLE</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container" style="justify-content: space-between;">
+        
+        <div class="card" style="background-color: #333; margin-bottom: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0; color: #ff0000;">ENEMY (AI)</h3>
+                <span id="timer" style="font-size: 2em; color: var(--color-accent);">0:85</span>
+            </div>
+            <p style="font-size: 1em; margin: 5px 0 0;">HP: <span id="enemyHPText">100/100</span></p>
+            <div class="hp-bar-container">
+                <div id="enemyHP" class="hp-bar" style="width: 100%; background-color: #ff0000;"></div>
+            </div>
+        </div>
+
+        <div id="battleLog" class="chat-window" style="height: 120px; flex-grow: 1; border-color: #fff; margin: 10px 0;">
+            <p style="font-size: 1em;"><strong>BATTLE START!</strong></p>
+        </div>
+
+        <div class="card" style="margin-top: 0; background-color: #333;">
+            <h3 style="margin: 0;">PLAYER (<span id="playerUsernameBattle">YOU</span>)</h3>
+            <p style="font-size: 1em; margin: 5px 0 0;">HP: <span id="playerHPText">100/100</span></p>
+            <div class="hp-bar-container">
+                <div id="playerHP" class="hp-bar" style="width: 100%;"></div>
+            </div>
+        </div>
+
+        <h2>ACTIONS</h2>
+        <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr;">
+            <button id="attackBtn" class="btn" style="background-color: #f00;">ATTACK (30 DMG)</button>
+            <button class="btn btn-secondary" disabled>DEFEND (+10 ARMOR)</button>
+            <button class="btn btn-secondary" disabled>SKILL 1 (CD)</button>
+            <button class="btn btn-secondary" disabled>SKILL 2 (MP)</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById('playerUsernameBattle').textContent = localStorage.getItem('player_username') || 'YOU';
+        // Add timer countdown logic here if needed
+    </script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

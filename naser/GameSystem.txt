@@ -1,0 +1,100 @@
+GameSystem/
+│
+├── README.md                         → Dokumentasi umum proyek
+├── package.json                      → Metadata (jika pakai Node.js untuk build frontend)
+├── requirements.txt                  → Daftar dependency backend (Flask, PyGame, dsb.)
+├── .gitignore                        → File yang diabaikan Git
+├── docker-compose.yml                → (Opsional) Untuk kontainerisasi server + database
+│
+├── /frontend/                        → Antarmuka pengguna (UI/UX)
+│   ├── index.html                    → Halaman utama / dashboard
+│   ├── login.html                    → Halaman login
+│   ├── register.html                 → Halaman registrasi
+│   ├── story_mode.html               → Mode cerita
+│   ├── pvp_match.html                → Mode PvP & matchmaking
+│   ├── battle.html                   → Arena pertarungan
+│   ├── result.html                   → Hasil pertarungan
+│   ├── guild.html                    → Halaman guild / clan
+│   ├── chat.html                     → Chat global & guild
+│   ├── feedback.html                 → Form feedback
+│   ├── report.html                   → Laporan toxic / cheating
+│   ├── overplay_warning.html         → Popup peringatan overplay
+│   ├── profile.html                  → Profil pemain
+│   ├── leaderboard.html              → Papan peringkat
+│   │
+│   ├── /assets/
+│   │   ├── /css/
+│   │   │   ├── style.css             → Styling global
+│   │   │   └── tailwind.css          → (Opsional) framework utilitas
+│   │   ├── /js/
+│   │   │   ├── main.js              → Script navigasi, animasi UI, validasi form
+│   │   │   └── api.js               → Script komunikasi ke backend (REST API / WebSocket)
+│   │   ├── /img/
+│   │   │   ├── logo.png
+│   │   │   ├── icons/
+│   │   │   └── backgrounds/
+│   │   └── /fonts/
+│   │       └── (font custom UI)
+│   │
+│   └── /components/                  → Elemen UI modular (navbar, footer, popup, modal)
+│       ├── navbar.html
+│       └── footer.html
+│
+├── /backend/                         → Logika server (API, matchmaking, overplay warning)
+│   ├── app.py                        → Entry point utama (Flask/FastAPI)
+│   ├── config.py                     → Konfigurasi server, environment variable
+│   ├── /routes/                      → Endpoint REST API
+│   │   ├── auth.py                   → Login, register, token
+│   │   ├── game.py                   → Mode PvP, Story, leaderboard
+│   │   ├── guild.py                  → Guild & chat management
+│   │   ├── feedback.py               → Feedback & report
+│   │   └── system.py                 → Overplay warning, monitor aktivitas
+│   │
+│   ├── /models/                      → ORM (SQLAlchemy atau Django Models)
+│   │   ├── user.py
+│   │   ├── match.py
+│   │   ├── guild.py
+│   │   ├── feedback.py
+│   │   └── overplay.py
+│   │
+│   ├── /services/                    → Logika bisnis terpisah (service layer)
+│   │   ├── matchmaking_service.py
+│   │   ├── overplay_service.py
+│   │   ├── notification_service.py
+│   │   └── chat_service.py
+│   │
+│   ├── /utils/                       → Fungsi pembantu (helpers)
+│   │   ├── security.py               → Enkripsi AES-256, JWT
+│   │   ├── validators.py             → Validasi input
+│   │   └── logger.py                 → Logging event
+│   │
+│   ├── /tests/                       → Unit & integration test
+│   │   ├── test_auth.py
+│   │   ├── test_pvp.py
+│   │   └── test_overplay.py
+│   │
+│   └── /static/                      → File statis (jika di-serve langsung)
+│       └── ...
+│
+├── /database/                        → Desain & inisialisasi database
+│   ├── schema.sql                    → Struktur tabel (users, matches, guilds, feedback)
+│   ├── seed_data.sql                 → Data awal (dummy)
+│   ├── migrations/                   → File migrasi versi DB
+│   └── db_connection.py              → Script koneksi DB
+│
+├── /docs/                            → Dokumentasi teknis & desain
+│   ├── Proposal_SRS.pdf
+│   ├── Class_Diagram.png
+│   ├── Use_Case_Diagram.png
+│   ├── Flowchart.png
+│   ├── UI_Mockup_Preview/
+│   │   ├── 01_Login.png
+│   │   ├── 02_Dashboard.png
+│   │   ├── ...
+│   └── README_DeveloperGuide.md
+│
+└── /deployment/                      → Skrip dan konfigurasi deploy
+    ├── nginx.conf                    → Konfigurasi reverse proxy
+    ├── gunicorn.conf.py              → Untuk Flask production
+    ├── dockerfile
+    └── ci_cd.yaml                    → Pipeline otomatis (GitHub Actions, dll)

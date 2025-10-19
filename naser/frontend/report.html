@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameSystem - REPORT</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-link" style="margin-bottom: 20px;">&lt; BACK TO DASHBOARD</a>
+        <h1>PLAYER REPORT SYSTEM</h1>
+
+        <div class="card">
+            <h2>LAPORKAN PELANGGARAN</h2>
+            <form onsubmit="alert('Laporan telah terkirim dan akan segera ditinjau oleh Moderator. Terima kasih telah menjaga komunitas!'); return false;">
+                <label for="reported_player">USERNAME YANG DILAPORKAN:</label>
+                <input type="text" id="reported_player" name="reported_player" required placeholder="Contoh: Toxic_Player123">
+
+                <label for="reason">ALASAN PELAPORAN:</label>
+                <select id="reason" name="reason" required>
+                    <option value="toxic">Perilaku Toxic / Pelecehan</option>
+                    <option value="cheating">Cheating / Menggunakan Program Ilegal</option>
+                    <option value="spam">Spamming / Iklan</option>
+                    <option value="other">Lain-lain</option>
+                </select>
+
+                <label for="details">DETAIL INSIDEN:</label>
+                <textarea id="details" name="details" rows="4" required placeholder="Sebutkan kapan dan di mana insiden terjadi..."></textarea>
+
+                <button type="submit" class="btn" style="background-color: #ff0000;">SUBMIT REPORT</button>
+            </form>
+        </div>
+    </div>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

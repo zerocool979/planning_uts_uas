@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameSystem - CHAT</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-link" style="margin-bottom: 20px;">&lt; BACK TO DASHBOARD</a>
+        <h1>LIVE CHAT SYSTEM</h1>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <a href="chat.html?mode=global" class="btn-small btn" style="width: 48%;">GLOBAL CHAT</a>
+            <a href="chat.html?mode=guild" class="btn-small btn-secondary" style="width: 48%;">GUILD CHAT</a>
+        </div>
+
+        <div id="chatWindow" class="chat-window">
+            </div>
+
+        <form id="chatForm">
+            <div style="display: flex; gap: 5px;">
+                <input type="text" id="messageInput" placeholder="Ketik pesan Anda..." style="margin: 0; flex-grow: 1; font-size: 1em;">
+                <button type="submit" class="btn btn-small" style="width: 100px; margin: 0; padding: 10px;">SEND</button>
+            </div>
+        </form>
+    </div>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
